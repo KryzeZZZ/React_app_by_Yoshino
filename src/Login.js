@@ -23,7 +23,7 @@ function Login() {
             <Input ref={inputAccountRef} placeholder={'请输入账号'} onChange={account => {
                 setAccount(account)
             }}></Input>
-            <Input placeholder={'请输入密码'} onChange={passwd => {
+            <Input placeholder={'请输入密码'} mode="password" onChange={passwd => {
                 setPasswd(passwd)
             }}></Input>
             {loginState === false && <div><Typography.Text type={"danger"}>登录失败</Typography.Text></div>}
