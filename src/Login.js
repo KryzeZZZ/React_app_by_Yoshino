@@ -1,7 +1,7 @@
 import { Input } from '@douyinfe/semi-ui';
 import { Typography } from '@douyinfe/semi-ui';
 import { Button, SplitButtonGroup } from '@douyinfe/semi-ui';
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef} from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function Login() {
@@ -13,11 +13,14 @@ function Login() {
         display: 'flex',
         justifyContent: 'space-around',
     }
-
+    const inputAccountRef = useRef(null);
+    useEffect(() => {
+        inputAccountRef.current.focus();
+    }, [])
     return (
         <>
             <Typography.Title style={header_style}>欢迎登录教书点名系统</Typography.Title>
-            <Input autoFocus placeholder={'请输入账号'} onChange={account => {
+            <Input ref={inputAccountRef} placeholder={'请输入账号'} onChange={account => {
                 setAccount(account)
             }}></Input>
             <Input placeholder={'请输入密码'} onChange={passwd => {
