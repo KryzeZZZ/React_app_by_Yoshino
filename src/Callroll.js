@@ -24,7 +24,7 @@ function CallRoll() {
     const {Text, Title} = Typography;
     const [chooseList, setChooseList] = useState([]);
     useEffect(() => {
-        axios.get('http://localhost:4000/Students')
+        axios.get('http://localhost:3000/Students')
             .then(response => {
                 console.log(response.data);
                 setData(response.data)
@@ -80,7 +80,7 @@ function CallRoll() {
                         </List.Item>
                     )}
                 />
-                <Button onClick={() => {setChosenOne(CallrollAction(chooseList))}}>点名</Button>
+                <Button onClick={() => {CallrollAction(chooseList)}}>点名</Button>
                 <Modal
                     title="抽取成功"
                     visible={visible}

@@ -9,17 +9,13 @@ function Login() {
     const [account, setAccount] = useState();
     const [passwd, setPasswd] = useState();
     const [loginState, setLoginState] = useState(true);
-    const header_style = {
-        display: 'flex',
-        justifyContent: 'space-around',
-    }
     const inputAccountRef = useRef(null);
     useEffect(() => {
         inputAccountRef.current.focus();
     }, [])
     return (
         <>
-            <Typography.Title style={header_style}>欢迎登录教书点名系统</Typography.Title>
+            <Typography.Title>欢迎登录教书点名系统</Typography.Title>
             <Input ref={inputAccountRef} placeholder={'请输入账号'} onChange={account => {
                 setAccount(account)
             }}></Input>
