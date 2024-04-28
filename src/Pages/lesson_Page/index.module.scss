@@ -1,0 +1,63 @@
+.root {
+  height: 100vh;
+  width: 100vw;
+  box-sizing: border-box;
+  overflow: hidden;
+  background: #F9F9F9;
+  :global {
+    .moonshotIcon {
+      position: fixed;
+      bottom: 0;
+      right: 0;
+      width: auto;
+      height: auto;
+    }
+    .backButton {
+      width: 38px;
+      height: 38px;
+      margin: 50px 0 0 90px;
+      background-color: #F9F9F9;
+    }
+    .titleContent {
+      display: flex;
+      justify-content: space-between;
+      padding:  0 100px;
+    }
+    .nonEmptyContent {
+      display: flex;
+      flex-direction: column;
+      gap: 50px;
+
+      .classList {
+        padding: 0 85px;
+        display: flex;
+        flex-wrap: wrap;
+
+        .listLabelbox {
+          width: 275px;
+          margin: 0 15px 80px 15px;
+        }
+        .listLabelbox:hover {
+          display: flex;
+          flex-direction: column;
+          gap: 50px;
+        }
+      }
+    }
+
+    .EmptyContent {
+      .NoticeContent {
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+
+        .emptyCreate {
+          width: 313px;
+        }
+      }
+    }
+  }
+}
