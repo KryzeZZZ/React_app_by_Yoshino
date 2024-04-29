@@ -5,6 +5,7 @@ import React, { useState, useEffect, useRef} from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './index.module.scss'
 import { Divider } from '@douyinfe/semi-ui';
+import {useSWR} from 'swr'
 
 function Login() {
     let navigate = useNavigate();

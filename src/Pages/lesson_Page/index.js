@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import {Modal, Button, List, Typography, Input} from '@douyinfe/semi-ui';
+import {Modal, Button, List, Typography, Input, Spin} from '@douyinfe/semi-ui';
 import { IconClose, IconArrowLeft, IconPlus } from '@douyinfe/semi-icons';
 import styles from './index.module.scss'
 import axios from "axios";
+import useSWR from "swr";
+
 
 function LessonChoose() {
     const { Text, Title } = Typography;
-    const [lessonData, setLessonData] = useState([]);
+    // const [lessonData, setLessonData] = useState([]);
     const [visible, setVisible] = useState(false);
     const showDialog = () => {
         setVisible(true);
     };
     const handleOk = () => {
         setVisible(false);
+        // const {data, error, isLoading} = useSWR('http://localhost:3000/Students', () => axios.get('http://localhost:3000/Students').then(response => response.data));
     };
     const handleCancel = () => {
         setVisible(false);
@@ -20,15 +23,17 @@ function LessonChoose() {
     const handleAfterClose = () => {
     };
     useEffect(() => {
-        axios.get('http://localhost:3000/Lessons')
-            .then(response => {
-                setLessonData(response.data);
-            })
-            .catch(error => {
-                console.error(error);
-            });
+        // axios.get('http://localhost:3000/Lessons')
+        //     .then(response => {
+        //         setLessonData(response.data);
+        //     })
+        //     .catch(error => {
+        //         console.error(error);
+        //     });
     }, []);
-
+    const {data, error, isLoading} = useSWR('http://localhost:3000/Lessons', () => axios.get('http://localhost:3000/Lessons').then(response => response.data));
+    if(error) return <div>loading failed</div>;
+    if(isLoading) return <Spin></Spin>;
     function EmptyContent() {
         return (
             <div className={"EmptyContent"}>
@@ -56,7 +61,7 @@ function LessonChoose() {
                     <Button onClick={showDialog} theme='light' type='tertiary' icon={<IconPlus />} iconPosition={"left"}>新建课程</Button>
                 </div>
                 <List className={"classList"}
-                    dataSource={lessonData}
+                    dataSource={data}
                     renderItem={item => (
                         <Button theme='solid' type='primary' className={"listLabelbox"}>{item.name}</Button>
                     )}
@@ -77,9 +82,9 @@ function LessonChoose() {
                 centered={true}
                 width={700}
             >
-                <Input placeholder={"请输入密码"}></Input>
+                <Input placeholder={"请输入课程名称"}></Input>
             </Modal>
-            {!lessonData.length ? <EmptyContent /> : <NonEmptyContent />}
+            {!data.length ? <EmptyContent /> : <NonEmptyContent />}
             <img src={"lesson_page/moonIcon.svg"} className={"moonshotIcon"}></img>
         </div>
     );

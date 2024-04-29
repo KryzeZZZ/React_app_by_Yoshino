@@ -3,50 +3,61 @@
     {
       "name": "张恩淇",
       "points": 0,
+      "chooseAble": true,
       "id": "c494"
     },
     {
       "name": "王子浩然",
       "points": 0,
+      "chooseAble": true,
       "id": "69a7"
     },
     {
       "name": "赵胤轩",
       "points": 0,
+      "chooseAble": true,
       "id": "ee8e"
     },
     {
       "name": "曾奕洲",
       "points": 0,
+      "chooseAble": true,
       "id": "1616"
     },
     {
       "name": "付子豪",
       "points": 0,
+      "chooseAble": true,
       "id": "85de"
     },
     {
       "name": "段啸俣",
       "points": 0,
+      "chooseAble": true,
       "id": "2013"
     },
     {
       "name": "高涵",
       "points": 0,
+      "chooseAble": true,
       "id": "dd74"
     },
     {
       "name": "王子元",
       "points": 0,
+      "chooseAble": true,
       "id": "c4bd"
     },
     {
       "name": "吴廷潇",
       "points": 0,
+      "chooseAble": true,
       "id": "9547"
     }
   ],
   "Lessons": [
-
+    {
+      "name": "python1"
+    }
   ]
 }

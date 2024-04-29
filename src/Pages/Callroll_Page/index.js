@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {Button, SplitButtonGroup, Typography} from '@douyinfe/semi-ui';
+import {Button, SplitButtonGroup, Typography, Spin} from '@douyinfe/semi-ui';
 import { Layout } from '@douyinfe/semi-ui';
 import { List, Descriptions, ButtonGroup, Rating, Modal } from '@douyinfe/semi-ui';
 import axios from 'axios';
+import useSWR from 'swr';
 
 function CallRoll() {
     const [visible, setVisible] = useState(false);
@@ -20,31 +21,49 @@ function CallRoll() {
     const handleAfterClose = () => {
         console.log('After Close callback executed');
     };
-    const [data, setData] = useState([]);
+    // const [data, setData] = useState([]);
     const {Text, Title} = Typography;
     const [chooseList, setChooseList] = useState([]);
+    let [chosenOne, setChosenOne] = useState("None");
+    const [shownData, setShownData] = useState([]);
+    const {data, error, isLoading} = useSWR('http://localhost:3000/Students', () => axios.get('http://localhost:3000/Students').then(response => response.data));
     useEffect(() => {
-        axios.get('http://localhost:3000/Students')
-            .then(response => {
-                console.log(response.data);
-                setData(response.data)
-                setChooseList(response.data)
-            })
-            .catch(error => {
-                console.error(error);
-            });
-    }, []);
+        if (!chooseList || chooseList.length === 0) {
+            console.log('ChooseList is empty');
+            if (data) {
+                const resetData = data.map(item => ({
+                    ...item,
+                    chooseAble: true
+                }));
+                setShownData(resetData);
+                setChooseList(resetData);
+            }
+        }
+    }, [data, chooseList]);
+    if(error) return <div>loading failed</div>;
+    if(isLoading) return <Spin></Spin>;
     function CallrollAction(StuList) {
         let chooseState = Math.random();
-        setChooseList(StuList.filter((content, index) => index != parseInt(chooseState / (1 / StuList.length))))
-        const outputName = new Promise((resolve, reject) => {
-            if(!StuList || StuList.length === 0) reject("None")
-            else {
-                showDialog()
-                resolve(StuList[parseInt(chooseState / (1 / StuList.length))].name)
+        let index_num = parseInt(chooseState / (1 / StuList.length));
+        let target_name = chooseList[index_num].name;
+        const newChooseList = StuList.filter((content, index) => index !== index_num);
+        setChooseList(newChooseList);
+        const newShownData = shownData.map(item => {
+            if (item.name === target_name) {
+                return { ...item, chooseAble: false };
+            } else {
+                return item;
             }
-        })
-            .then(name => setChosenOne(name)).catch(name => setChosenOne(name))
+        });
+        setShownData(newShownData);
+        const outputName = new Promise((resolve, reject) => {
+            if (!StuList || StuList.length === 0) {
+                reject("None");
+            } else {
+                showDialog();
+                resolve(StuList[index_num].name);
+            }
+        }).then(name => setChosenOne(name)).catch(name => setChosenOne(name));
     }
     const style = {
         border: '1px solid var(--semi-color-border)',
@@ -52,7 +71,6 @@ function CallRoll() {
         borderRadius: '3px',
         paddingLeft: '20px',
     };
-    let [chosenOne, setChosenOne] = useState("None");
     const { Header, Footer, Sider, Content } = Layout;
     return (
         <Layout className="components-layout-demo">
@@ -63,11 +81,11 @@ function CallRoll() {
                         gutter: 12,
                         span: 6,
                     }}
-                    dataSource={data}
+                    dataSource={shownData}
                     renderItem={item => (
                         <List.Item style={style}>
                             <div>
-                                <h3 style={{ color: 'var(--semi-color-text-0)', fontWeight: 500 }}>{item.name}</h3>
+                                <h3 style={{color: item.chooseAble ? 'black' : 'grey'}}>{item.name}</h3>
                                 <Descriptions
                                     align="center"
                                     size="small"
