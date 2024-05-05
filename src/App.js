@@ -6,6 +6,10 @@ import React from 'react';
 import {createBrowserRouter, Route, RouterProvider, Routes} from 'react-router-dom'
 const router = createBrowserRouter([
     {
+        path: "/",
+        element: <Login />,
+    },
+    {
         path: "/login",
         element: <Login />,
     },

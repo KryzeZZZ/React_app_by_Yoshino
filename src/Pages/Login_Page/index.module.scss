@@ -38,6 +38,16 @@
         padding: 0;
         gap: 20px;
       }
+      .login_button_footer {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        button {
+          width: 200px;
+        }
+      }
       .line {
         width: 100%;
       }

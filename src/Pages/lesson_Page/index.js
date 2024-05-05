@@ -2,14 +2,19 @@ import React, { useEffect, useState } from 'react';
 import {Modal, Button, List, Typography, Input, Spin} from '@douyinfe/semi-ui';
 import { IconClose, IconArrowLeft, IconPlus } from '@douyinfe/semi-icons';
 import styles from './index.module.scss'
+import {useLocation, useNavigate} from 'react-router-dom'
 import axios from "axios";
 import useSWR from "swr";
 
 
 function LessonChoose() {
+    let tempState = useLocation();
+    let userIndex = tempState.state.id;
+    const navigate = useNavigate()
     const { Text, Title } = Typography;
     // const [lessonData, setLessonData] = useState([]);
     const [visible, setVisible] = useState(false);
+    const [lessons, setLessons] = useState([]);
     const showDialog = () => {
         setVisible(true);
     };
@@ -22,22 +27,23 @@ function LessonChoose() {
     };
     const handleAfterClose = () => {
     };
+    const {data, error, isLoading} = useSWR(`http://localhost:3000/account`, () => axios.get('http://localhost:3000/account').then(response => response.data));
     useEffect(() => {
-        // axios.get('http://localhost:3000/Lessons')
-        //     .then(response => {
-        //         setLessonData(response.data);
-        //     })
-        //     .catch(error => {
-        //         console.error(error);
-        //     });
-    }, []);
-    const {data, error, isLoading} = useSWR('http://localhost:3000/Lessons', () => axios.get('http://localhost:3000/Lessons').then(response => response.data));
+        if(!(data === undefined)) {
+            // console.log(userIndex)
+            // console.log(data[])
+            setLessons(data[userIndex].lessons)
+        }
+    }, [data]);
     if(error) return <div>loading failed</div>;
     if(isLoading) return <Spin></Spin>;
+    function goBack() {
+        navigate(-1);  // 返回上一页
+    }
     function EmptyContent() {
         return (
             <div className={"EmptyContent"}>
-                <Button theme='light' type='tertiary' icon={<IconArrowLeft />} className={"backButton"}></Button>
+                <Button theme='light' type='tertiary' icon={<IconArrowLeft />} className={"backButton"} onClick={goBack}></Button>
                 <div className={"titleContent"}>
                     <Title heading={1}>请选择您的课程</Title>
                     {/*<Button theme='light' type='tertiary' icon={<IconPlus />} iconPosition={"left"}>新建课程</Button>*/}
@@ -51,19 +57,30 @@ function LessonChoose() {
             </div>
         );
     }
+    function chooseLesson(lessonName) {
+        // console.log(lessonName);
+        for(let index in lessons) {
+            // console.log(index);
+            if(lessonName === lessons[index].name) {
+                tempState.state.lessonId = index;
+                navigate("/callroll", {state: tempState})
+                return;
+            }
+        }
 
+    }
     function NonEmptyContent() {
         return (
             <div className={"nonEmptyContent"}>
-                <Button theme='light' type='tertiary' icon={<IconArrowLeft />} className={"backButton"}></Button>
+                <Button theme='light' type='tertiary' icon={<IconArrowLeft />} className={"backButton"} onClick={goBack}></Button>
                 <div className={"titleContent"}>
                     <Title heading={1}>请选择您的课程</Title>
                     <Button onClick={showDialog} theme='light' type='tertiary' icon={<IconPlus />} iconPosition={"left"}>新建课程</Button>
                 </div>
                 <List className={"classList"}
-                    dataSource={data}
+                    dataSource={lessons}
                     renderItem={item => (
-                        <Button theme='solid' type='primary' className={"listLabelbox"}>{item.name}</Button>
+                        <Button theme='solid' type='primary' className={"listLabelbox"} onClick={() => {chooseLesson(item.name)}}>{item.name}</Button>
                     )}
                 />
             </div>
@@ -84,7 +101,7 @@ function LessonChoose() {
             >
                 <Input placeholder={"请输入课程名称"}></Input>
             </Modal>
-            {!data.length ? <EmptyContent /> : <NonEmptyContent />}
+            {!lessons.length ? <EmptyContent /> : <NonEmptyContent />}
             <img src={"lesson_page/moonIcon.svg"} className={"moonshotIcon"}></img>
         </div>
     );
