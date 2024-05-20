@@ -3,10 +3,12 @@ import { Typography } from '@douyinfe/semi-ui';
 import { Button, SplitButtonGroup } from '@douyinfe/semi-ui';
 import React, { useState, useEffect, useRef} from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { IconClose, IconArrowLeft, IconPlus } from '@douyinfe/semi-icons';
 import styles from './index.module.scss'
 import { Divider } from '@douyinfe/semi-ui';
 import axios from 'axios';
 import useSWR from 'swr'
+// import {set} from "express/lib/application";
 
 function Login() {
     let navigate = useNavigate();
@@ -17,25 +19,30 @@ function Login() {
     useEffect(() => {
         inputAccountRef.current.focus();
     }, [])
-    const {data, error, isLoading} = useSWR('http://localhost:3000/account', () => axios.get('http://localhost:3000/account').then(response => response.data));
-    useEffect(() => {
-        if (error) setLoginState(-1);
-        if (isLoading) setLoginState(-2);
-    }, [error, isLoading]);
+    // const {data, error, isLoading} = useSWR('http://localhost:3000/account', () => axios.get('http://localhost:3000/account').then(response => response.data));
     function LoginAction(account, passwd) {
         let flag = false;
         let index = -1;
-        if (data) {
-            for (let i = 0; i < data.length; i++) {
-                let act = data[i];
-                if (act.username === account && passwd === act.password) {
-                    setLoginState(1); // 登录成功
-                    navigate("/lesson", {state: {id: i}}); // 使用当前循环的索引
-                    return;
+        const body = {
+            username: account,
+            password: passwd
+        };
+        axios.post('http://localhost:5050/action/login', body)
+            .then(res => {
+                console.log(res.data)
+                if (res.data.code === 0) {
+                    setLoginState(1);
+                    localStorage.setItem('token', res.data.token);
+                    navigate(`/lesson`,)
                 }
-            }
-        }
-        setLoginState(-1); // 登录失败
+                else {
+                    setLoginState(-1)
+                }
+            })
+            .catch(err => {
+                // console.log(err);
+                setLoginState(-1)
+            });
     }
     return (
         <div className={styles.root}>

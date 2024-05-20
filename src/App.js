@@ -3,7 +3,7 @@ import Login from './Pages/Login_Page/index.js';
 import CallRoll from "./Pages/Callroll_Page/index.js";
 import LessonChoose from "./Pages/lesson_Page/index.js";
 import React from 'react';
-import {createBrowserRouter, Route, RouterProvider, Routes} from 'react-router-dom'
+import {createBrowserRouter, Route, RouterProvider, Routes, useParams} from 'react-router-dom'
 const router = createBrowserRouter([
     {
         path: "/",
@@ -14,7 +14,7 @@ const router = createBrowserRouter([
         element: <Login />,
     },
     {
-        path: "/callroll",
+        path: "/callroll/:courseId",
         element: <CallRoll />,
     },
     {

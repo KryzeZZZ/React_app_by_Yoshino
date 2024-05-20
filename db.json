@@ -1,82 +1,145 @@
 {
-  "account" : [
+  "account": [
     {
       "username": "admin",
       "password": "admin123",
-      "lessons" : [
-          {
-            "name": "test",
-            "Student": [
-
-            ]
-          },
-          {
-            "name": "python1",
-            "Students": [
-              {
-                "name": "张恩淇",
-                "points": 0,
-                "chooseAble": true,
-                "id": "c494"
-              },
-              {
-                "name": "王子浩然",
-                "points": 0,
-                "chooseAble": true,
-                "id": "69a7"
-              },
-              {
-                "name": "赵胤轩",
-                "points": 0,
-                "chooseAble": true,
-                "id": "ee8e"
-              },
-              {
-                "name": "曾奕洲",
-                "points": 0,
-                "chooseAble": true,
-                "id": "1616"
-              },
-              {
-                "name": "付子豪",
-                "points": 0,
-                "chooseAble": true,
-                "id": "85de"
-              },
-              {
-                "name": "段啸俣",
-                "points": 0,
-                "chooseAble": true,
-                "id": "2013"
-              },
-              {
-                "name": "高涵",
-                "points": 0,
-                "chooseAble": true,
-                "id": "dd74"
-              },
-              {
-                "name": "王子元",
-                "points": 0,
-                "chooseAble": true,
-                "id": "c4bd"
-              },
-              {
-                "name": "吴廷潇",
-                "points": 0,
-                "chooseAble": true,
-                "id": "9547"
-              }
-            ]
-          }
-      ]
+      "lessons": [
+        {
+          "name": "test",
+          "Student": []
+        },
+        {
+          "name": "python1",
+          "Students": [
+            {
+              "name": "张恩淇",
+              "points": 0,
+              "chooseAble": true,
+              "id": "c494"
+            },
+            {
+              "name": "王子浩然",
+              "points": 0,
+              "chooseAble": true,
+              "id": "69a7"
+            },
+            {
+              "name": "赵胤轩",
+              "points": 0,
+              "chooseAble": true,
+              "id": "ee8e"
+            },
+            {
+              "name": "曾奕洲",
+              "points": 0,
+              "chooseAble": true,
+              "id": "1616"
+            },
+            {
+              "name": "付子豪",
+              "points": 0,
+              "chooseAble": true,
+              "id": "85de"
+            },
+            {
+              "name": "段啸俣",
+              "points": 0,
+              "chooseAble": true,
+              "id": "2013"
+            },
+            {
+              "name": "高涵",
+              "points": 0,
+              "chooseAble": true,
+              "id": "dd74"
+            },
+            {
+              "name": "王子元",
+              "points": 0,
+              "chooseAble": true,
+              "id": "c4bd"
+            },
+            {
+              "name": "吴廷潇",
+              "points": 0,
+              "chooseAble": true,
+              "id": "9547"
+            }
+          ]
+        }
+      ],
+      "id": "1"
     },
     {
       "username": "test",
       "password": "test",
-      "lessons": [
-
-      ]
+      "lessons": [],
+      "id": "2"
+    }
+  ],
+  "student": [
+    {
+      "name": "张恩淇",
+      "points": 1,
+      "chooseAble": true,
+      "id": "c494",
+      "point": 1
+    },
+    {
+      "name": "王子浩然",
+      "points": 1,
+      "chooseAble": true,
+      "id": "69a7",
+      "point": 1
+    },
+    {
+      "name": "赵胤轩",
+      "points": 1,
+      "chooseAble": true,
+      "id": "ee8e",
+      "point": 1
+    },
+    {
+      "name": "曾奕洲",
+      "points": 1,
+      "chooseAble": true,
+      "id": "1616",
+      "point": 1
+    },
+    {
+      "name": "付子豪",
+      "points": 2,
+      "chooseAble": true,
+      "id": "85de",
+      "point": 2
+    },
+    {
+      "name": "段啸俣",
+      "points": 1,
+      "chooseAble": true,
+      "id": "2013",
+      "point": 1
+    },
+    {
+      "name": "高涵",
+      "points": 1,
+      "chooseAble": true,
+      "id": "dd74",
+      "point": 1
+    },
+    {
+      "name": "王子元",
+      "points": 1,
+      "chooseAble": true,
+      "id": "c4bd",
+      "point": 1
+    },
+    {
+      "name": "吴廷潇",
+      "points": 1,
+      "chooseAble": true,
+      "id": "9547",
+      "point": 1
     }
   ]
 }
