@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Typography, Spin, Modal, Layout, List, Descriptions, Space, Tabs, Input, Form, Notification, TabPane } from '@douyinfe/semi-ui';
+import { Button, Typography, Spin, Modal, Layout, List, Input, Notification, Tabs, TabPane } from '@douyinfe/semi-ui';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
-import useSWR from 'swr';
+import useSWR, { mutate } from 'swr';
 import styles from './index.module.scss';
-import { IconArrowLeft } from "@douyinfe/semi-icons";
+import { IconArrowLeft, IconPlus } from "@douyinfe/semi-icons";
+import Text from "@douyinfe/semi-ui/lib/es/typography/text";
 
 const addScoreRecord = async (courseId, studentId, scoreData, token) => {
     try {
@@ -24,13 +25,13 @@ const addScoreRecord = async (courseId, studentId, scoreData, token) => {
 
 function StudentLabel(stuDetail) {
     return (
-        <List.Item style={{ border: '1px solid var(--semi-color-border)', backgroundColor: 'var(--semi-color-bg-2)', borderRadius: '3px', paddingLeft: '20px' }}>
-            <Space vertical><h3 style={{ color: stuDetail.chooseAble ? 'black' : 'grey' }}>{stuDetail.name}</h3>
-                <div>
-                    <Descriptions align="center" size="small" data={[{ key: '分数', value: stuDetail.points }]} />
-                </div>
-            </Space>
-        </List.Item>
+        <Button block
+                theme='solid'
+                type='primary'
+                className={"studentButton"}
+        >
+            <Text type={stuDetail.chooseAble ? 'black' : 'tertiary'}>{stuDetail.name} {stuDetail.points}</Text>
+        </Button>
     );
 }
 
@@ -54,7 +55,7 @@ function CallRoll() {
     const headers = {
         Authorization: `Bearer ${token}`
     };
-
+    const fetcherWithHeaders = (url) => axios.get(url, { headers }).then(response => response.data).catch(error => console.log(error));
     const { data, error, isLoading } = useSWR(`http://localhost:5050/courses/${courseId}/students`, () =>
         axios.get(`http://localhost:5050/courses/${courseId}/students`, { headers }).then(res => res.data)
     );
@@ -70,7 +71,11 @@ function CallRoll() {
             let tempData = [...data];
             console.log(tempData);
             tempData.forEach((item) => {
-                if (!item.attendance) item.chooseAble = true;
+                if (!item.attendances) item.chooseAble = true;
+                else {
+                    if(item.attendances[0].status === 1) item.chooseAble = true;
+                    else item.chooseAble = false;
+                }
                 if (!item.scores || item.scores.length === 0) item.points = 0;
                 else item.points = item.scores[0].score;
             });
@@ -94,10 +99,11 @@ function CallRoll() {
 
     useEffect(() => {
         if (chooseList.length === 0) {
-            setShownData(originData);
-            if (originData) {
+            mutate(`http://localhost:5050/courses/${courseId}/students`, fetcherWithHeaders).catch();
+            setShownData(data);
+            if (data) {
                 let tempData = [];
-                originData.forEach(value => {
+                data.forEach(value => {
                     if (value.chooseAble) {
                         tempData.push(value);
                     }
@@ -126,13 +132,7 @@ function CallRoll() {
 
     const getCurrentDateTime = () => {
         const now = new Date();
-        const year = now.getFullYear();
-        const month = String(now.getMonth() + 1).padStart(2, '0');
-        const day = String(now.getDate()).padStart(2, '0');
-        const hours = String(now.getHours()).padStart(2, '0');
-        const minutes = String(now.getMinutes()).padStart(2, '0');
-        const seconds = String(now.getSeconds()).padStart(2, '0');
-        return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+        return now.toLocaleString('zh-CN', { timeZone: 'Asia/Beijing' });
     };
 
     const handleCorrect = async () => {
@@ -183,33 +183,51 @@ function CallRoll() {
 
     return (
         <div className={styles.root}>
-            <Button theme='light' type='tertiary' icon={<IconArrowLeft />} className={"backButton"} onClick={goBack}></Button>
+            <div className={"headContainer"}>
+                <Button theme='light' type='tertiary' icon={<IconArrowLeft />} className={"backButton"} onClick={goBack}></Button>
+                <div className={"funcContainer"}>
+                    <Button  className={"addButton"} theme='light' type='tertiary' icon={<IconPlus />} iconPosition={"left"}>手动改分</Button>
+                    <Button  className={"addButton"} theme='light' type='tertiary' icon={<IconPlus />} iconPosition={"left"}>修改考勤</Button>
+                </div>
+            </div>
             <div className={"header_container"}>
-                <Title heading={1}>Call Roll System</Title>
+                <Title heading={1}>上课</Title>
             </div>
             <Tabs className={"tabs"}>
-                <TabPane tab={"单人"} itemKey={1}>
-                    <Content style={{ height: 300, lineHeight: '300px' }}>
-                        <List
-                            grid={{ gutter: 12, span: 6 }}
-                            dataSource={shownData}
-                            renderItem={item => (
-                                <StudentLabel key={item.id} {...item} />
-                            )}
-                        />
-                    </Content>
-                    <Button onClick={callRollAction}>点名</Button>
+                <TabPane tab={"单人"} itemKey={1} className={"Single"}>
+                    <List
+                        dataSource={shownData}
+                        className={"LabelContainer"}
+                        renderItem={item => (
+                            <Button block
+                                    theme='solid'
+                                    type='primary'
+                                    className={"studentButton"}
+                            >
+                                <Text type={item.chooseAble ? 'black' : 'tertiary'}>{item.name} {item.points}</Text>
+                            </Button>
+                        )}
+                    />
+                    <div className={"CallrollContainer"}>
+                        <Button theme='solid' type='primary' className={"CallrollButton"} onClick={callRollAction}>
+                            <Title heading={3} style={{color: "white"}}>回答问题</Title>
+                        </Button>
+                    </div>
                 </TabPane>
-                <TabPane tab={"分组"} itemKey={2}>
-                    <Content style={{ height: 300, lineHeight: '300px' }}>
-                        <List
-                            grid={{ gutter: 12, span: 6 }}
-                            dataSource={shownData}
-                            renderItem={item => (
-                                <StudentLabel key={item.id} {...item} />
-                            )}
-                        />
-                    </Content>
+                <TabPane tab={"分组"} itemKey={2} className={"Group"}>
+                    <List
+                        dataSource={shownData}
+                        className={"LabelContainer"}
+                        renderItem={item => (
+                            <Button block
+                                    theme='solid'
+                                    type='primary'
+                                    className={"studentButton"}
+                            >
+                                <Text type={item.chooseAble ? 'black' : 'tertiary'}>{item.name} {item.points}</Text>
+                            </Button>
+                        )}
+                    />
                     <Text>每组分成 <Input onChange={e => setGroupSize(e)} /> 人</Text>
                     <Button onClick={() => { divideGroup(groupSize) }} disabled={!(groupSize)}>随机分组</Button>
                     <List
@@ -227,34 +245,6 @@ function CallRoll() {
                         )}
                     />
                 </TabPane>
-                <TabPane tab={"添加分数记录"} itemKey={3}>
-                    <Form>
-                        <Form.Input
-                            field="date"
-                            label="Date"
-                            placeholder="YYYY-MM-DD HH:MM:SS"
-                            value={date}
-                            disabled
-                        />
-                        <Form.Input
-                            field="session"
-                            label="Session"
-                            placeholder="0 for morning, 1 for afternoon"
-                            onChange={(value) => setSession(Number(value))}
-                            value={session}
-                        />
-                        <Form.Input
-                            field="score"
-                            label="Score"
-                            placeholder="Enter score"
-                            onChange={(e) => setScore(Number(e))}
-                            value={score}
-                        />
-                        <Button type="primary" onClick={handleCorrect}>
-                            Add Score
-                        </Button>
-                    </Form>
-                </TabPane>
                 <Modal
                     title="抽取成功"
                     visible={visible}
@@ -268,6 +258,7 @@ function CallRoll() {
                     {chosenOne}
                 </Modal>
             </Tabs>
+            <img src={"/lesson_page/moonIcon.svg"} className={"moonshotIcon"} alt="Moon icon"/>
         </div>
     );
 }

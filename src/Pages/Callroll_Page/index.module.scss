@@ -6,16 +6,87 @@
   background-color: #F9F9F9;
   display: flex;
   flex-direction: column;
-  gap: 100px;
+  gap: 38px;
   :global {
+    .tabs {
+      margin-left: 100px;
+      .Single {
+        .LabelContainer {
+          display: flex;
+          align-items: center;
+          flex-wrap: wrap;
+          .studentButton {
+            background-color: white;
+            border-radius: var(--radius-button, 8px);
+            border: var(--height-dropdown_seperator, 1px) solid var(--usage-info---semi-color-info, #0077FA);
+            width: 168px;
+            height: 48px;
+            margin: 32px 18px 40px 0;
+            flex: 1;
+            z-index: 1;
+          }
+        }
+        .CallrollContainer {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin-top: 20px; // Adjust the margin as needed
+          .CallrollButton {
+            width: 320px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+        }
+      }
+      .Group {
+        .LabelContainer {
+          display: flex;
+          align-items: center;
+          flex-wrap: wrap;
+          .studentButton {
+            background-color: white;
+            border-radius: var(--radius-button, 8px);
+            border: var(--height-dropdown_seperator, 1px) solid var(--usage-info---semi-color-info, #0077FA);
+            width: 168px;
+            height: 48px;
+            margin: 32px 18px 40px 0;
+            flex: 1;
+            z-index: 1;
+          }
+        }
+      }
+    }
     .backButton {
       width: 38px;
       height: 38px;
-      margin: 50px 0 0 90px;
       background-color: #F9F9F9;
     }
+    .headContainer {
+      display: flex;
+      justify-content: space-between;
+      margin: 50px 50px 0 90px;
+      .funcContainer {
+        display: flex;
+        gap: 50px;
+        .addButton {
+          height: 48px;
+          background-color: #e6f7ff; /* 设置背景色为淡蓝色 */
+          border: 1px solid #91d5ff; /* 设置边框颜色 */
+          color: #000; /* 设置文本颜色 */
+          border-radius: 5px; /* 设置圆角 */
+          padding: 5px 10px; /* 设置内边距 */
+          display: flex;
+          align-items: center;
+        }
+      }
+    }
+    .LabelContainer {
+      display: inline-flex;
+    }
     .header_container {
-
+      margin: 0 100px;
     }
     .moonshotIcon {
       position: fixed;

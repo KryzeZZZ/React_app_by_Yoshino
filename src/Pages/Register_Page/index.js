@@ -27,13 +27,13 @@ function Login() {
             username: account,
             password: passwd
         };
-        axios.post('http://localhost:5050/action/login', body)
+        axios.post('http://localhost:5050/action/register', body)
             .then(res => {
                 console.log(res.data)
                 if (res.data.code === 0) {
                     setLoginState(1);
                     localStorage.setItem('token', res.data.token);
-                    navigate(`/lesson`,)
+                    navigate(`/login`,)
                 }
                 else {
                     setLoginState(-1)
@@ -77,9 +77,8 @@ function Login() {
                     //         console.log(stateCode)
                     //     });
                      }
-                    } disabled={!account || !passwd}>登录</Button></div>
+                    } disabled={!account || !passwd}>注册</Button></div>
                     {!loginState === -2 && <Spin></Spin>}
-                    <div><Typography.Text>如果没有账号点击这里<Typography.Text link={{href: "http://localhost:3000/register"}}>注册</Typography.Text></Typography.Text></div>
                 </div>
                 <Divider className="line"/>
             </div>

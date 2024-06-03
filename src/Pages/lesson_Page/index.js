@@ -92,7 +92,7 @@ function LessonChoose() {
     }
 
     function chooseLesson(courseId) {
-        navigate(`/callroll/${courseId}`)
+        navigate(`/student/${courseId}`)
     }
 
     function NonEmptyContent() {
@@ -101,7 +101,7 @@ function LessonChoose() {
                 <Button theme='light' type='tertiary' icon={<IconArrowLeft />} className={"backButton"} onClick={goBack}></Button>
                 <div className={"titleContent"}>
                     <Title heading={1}>请选择您的课程</Title>
-                    <Button onClick={showDialog} theme='light' type='tertiary' icon={<IconPlus />} iconPosition={"left"}>新建课程</Button>
+                    <Button onClick={showDialog} theme='light' type='tertiary' icon={<IconPlus />} iconPosition={"left"} className={"addButton"}>新建课程</Button>
                 </div>
                 <List className={"classList"}
                       dataSource={lessons}

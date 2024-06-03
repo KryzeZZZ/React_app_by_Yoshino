@@ -1,0 +1,16 @@
+.attendanceModal {
+  .studentRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+
+    .semi-radio-button-group {
+      margin-right: 16px;
+    }
+
+    .semi-input {
+      width: 200px;
+    }
+  }
+}
